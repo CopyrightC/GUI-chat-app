@@ -10,20 +10,18 @@ from tkinter import font
 import socket
 
 def ask_ip_port():
-    host1 = simpledialog.askstring("Room code","Enter the the chat room code")
-    port1 = simpledialog.askinteger("Password","Enter the room password")
+    host1 = simpledialog.askstring("Room code","Enter the the chat room code") #Actually the host ip
+    port1 = simpledialog.askinteger("Password","Enter the room password")#The port
     return host1,port1
-    
-#(host,port) = ('3.128.107.74',14163)
 
 class Connection:
     def __init__(self):
         
-        msg = Tk()
-        msg.withdraw()
+        win = Tk() #For the simpledialog box
+        win.withdraw() #Withdrawing the window so the blank window isn't visible to the user
 
         self.connection_made = False
-        host,port = '127.0.0.1',65432
+        host,port = ask_ip_port()
         self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         try:
             self.s.connect((host,port))
@@ -38,10 +36,10 @@ class Connection:
                 messagebox.showerror("Error!","The room code or the password is wrong! Try again.")
 
         if self.connection_made:
-            self.usrnm = simpledialog.askstring("Username","Enter your username : ",parent = msg)
+            self.usrnm = simpledialog.askstring("Username","Enter your username : ",parent = win)
             while len(self.usrnm) < 4:
                 messagebox.showerror("Error","Username can't have less than 4 characters")
-                self.usrnm = simpledialog.askstring("Username","Enter your username : ",parent = msg)
+                self.usrnm = simpledialog.askstring("Username","Enter your username : ",parent = win)
                 
             msg.destroy()
             self.over = False
@@ -49,8 +47,8 @@ class Connection:
             self.setup= False
             self.letter_index = []
             self.metrics = [GetSystemMetrics(0),GetSystemMetrics(1)]
-            self.front_thread = Thread(target=self.Frontend)
-            self.recv_thread = Thread(target=self.recv)
+            self.front_thread = Thread(target=self.Frontend) #GUI
+            self.recv_thread = Thread(target=self.recv) #Receiving messages from the server
 
             self.front_thread.start()
             self.recv_thread.start()
@@ -73,6 +71,7 @@ class Connection:
         prflabel.place(x=4,y=8)
         Label(self.root,text = "Chat Room",font = ("Arial",17),bg = "gray78").place(x=350,y=16)
         cht_font = font.Font(family = "Trebuchet MS",size =17)
+        
         self.cht_place = scrolledtext.ScrolledText(self.root,width=97,height = 16)
         self.cht_place.place(x=2,y=67)
         self.cht_place.configure(font = cht_font)
@@ -80,11 +79,12 @@ class Connection:
         self.entry_area = Text(self.root,width = 89,height = 4)
         self.entry_area.place(x=5,y=525)
         self.entry_area.focus_force()
+        
         sendbtn = Button(self.root,width = 65,height =60,bg="white",image = self.btnimg,command=self.sendmsg)
         sendbtn.place(x=726,y=526)
 
         self.setup = True
-        self.root.protocol("WM_DELETE_WINDOW",self.handle_quit)
+        self.root.protocol("WM_DELETE_WINDOW",self.handle_quit) #Handling the exit event
         self.root.bind("<Shift_L>",self.checkkeyprs)
         self.root.bind("<KeyRelease>",self.onrel)
         self.root.bind("<Return>",self.sendmsg)
@@ -120,15 +120,19 @@ class Connection:
         self.root.destroy()
         self.over = True
         self.s.close()
-        exit(0)
+        exit(0) #Exit code 0
 
-    def sendmsg(self,*argv):
+    def sendmsg(self,*argv): 
+        '''
+        When the user will press Enter event will be passed as an argument and whenever the user clicks the send button
+        then no args will be passed to *argv will be empty.
+        '''
         if not self.shift_press:
             entrytxt = self.entry_area.get('1.0','end')
             msg = f"{self.usrnm} : {entrytxt}"
             lenx = len(msg)
             if msg[lenx-1] == "\n" : msg = msg.replace(msg[lenx-1],"")
-            if len(msg) < 546:
+            if len(msg) < 546: #Limiting the maximum character in a single message to 546 letters
                 contents = self.entry_area.get('1.0','end').replace('\n',"")
                 contents2 = str(contents).replace(' ',"")
                 print(len(contents2))
@@ -146,6 +150,7 @@ class Connection:
     def checkkeyprs(self,event):self.shift_press = True
       
     def onrel(self,event):
+        #Checking if shift is being pressed by the user
         if str(event).startswith("<KeyRelease event state=Shift"):self.shift_press = False
         
 con = Connection()
