@@ -141,7 +141,7 @@ class Connection:
                 print(len(contents2))
                 print(len(contents))
                 print(contents2)
-                if len(contents) > 0 and len(contents2) > 0:
+                if len(contents) > 0 and len(contents2) > 0: #Sending the message to server if the length of message(excluding the line break and spaces) is greater than 0
                     self.s.send(msg.encode())
                     self.s.send('\n'.encode())
                     self.entry_area.delete('1.0','end')
