@@ -85,6 +85,9 @@ class Connection:
 
         self.setup = True
         self.root.protocol("WM_DELETE_WINDOW",self.handle_quit) #Handling the exit event
+        
+        #Binding the keys to some methods
+        
         self.root.bind("<Shift_L>",self.checkkeyprs)
         self.root.bind("<KeyRelease>",self.onrel)
         self.root.bind("<Return>",self.sendmsg)
