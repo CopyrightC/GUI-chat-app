@@ -128,7 +128,7 @@ class Connection:
     def sendmsg(self,*argv): 
         '''
         When the user will press Enter event will be passed as an argument and whenever the user clicks the send button
-        then no args will be passed to *argv will be empty.
+        then no args will be passed so *argv will be empty.
         '''
         if not self.shift_press:
             entrytxt = self.entry_area.get('1.0','end')
