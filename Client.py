@@ -10,11 +10,17 @@ from tkinter import font
 import socket
 
 def ask_ip_port():
+    '''
+    The programme asks user to enter the room code and room password which are nothing but ip and port of host
+    '''
     host1 = simpledialog.askstring("Room code","Enter the the chat room code") #Actually the host ip
     port1 = simpledialog.askinteger("Password","Enter the room password")#The port
     return host1,port1
 
 class Connection:
+    '''
+    Constructor
+    '''
     def __init__(self):
         
         win = Tk() #For the simpledialog box
@@ -29,6 +35,9 @@ class Connection:
         except:
             messagebox.showerror("Error!","The room code or the password is wrong! Try again.")
             host,port = ask_ip_port()
+            '''
+            Giving user 2 chances to enter correct ip and port else the programme will close.
+            '''
             try:
                 self.s.connect((host,port))
                 self.connection_made = True
@@ -36,8 +45,8 @@ class Connection:
                 messagebox.showerror("Error!","The room code or the password is wrong! Try again.")
 
         if self.connection_made:
-            self.usrnm = simpledialog.askstring("Username","Enter your username : ",parent = win)
-            while len(self.usrnm) < 4:
+            self.usrnm = simpledialog.askstring("Username","Enter your username : ",parent = win)#Username
+            while len(self.usrnm) < 4: #Username should have atleast 4 characters
                 messagebox.showerror("Error","Username can't have less than 4 characters")
                 self.usrnm = simpledialog.askstring("Username","Enter your username : ",parent = win)
                 
@@ -46,21 +55,25 @@ class Connection:
             self.shift_press = False
             self.setup= False
             self.letter_index = []
-            self.metrics = [GetSystemMetrics(0),GetSystemMetrics(1)]
+            self.metrics = [GetSystemMetrics(0),GetSystemMetrics(1)]#Getting the monitor resolution
             self.front_thread = Thread(target=self.Frontend) #GUI
             self.recv_thread = Thread(target=self.recv) #Receiving messages from the server
 
             self.front_thread.start()
             self.recv_thread.start()
         else:
-            quit()
-    def Frontend(self):
+            quit() #Close the programme if the provided ip and port isn't valid
+            
+    def Frontend(self):#User-interface
         self.root = Tk()
         self.icon = "data/images/chat.ico"
-        self.root.geometry("800x600"+f"+{int(self.metrics[0]/2) -400}+{int(self.metrics[1]/2)-300}")
+        self.root.geometry("800x600"+f"+{int(self.metrics[0]/2) -400}+{int(self.metrics[1]/2)-300}")#800x600 and positioning the window at center
         self.root.title("PyChat")
         self.root.iconbitmap(self.icon)
         self.root.configure(bg = "gray40")
+        '''
+        Disabaling the maximize button
+        '''
         self.root.resizable(0,0)
         self.btnimg = PhotoImage(file = "data/images/send1.png",master=self.root)
         self.prof = PhotoImage(file = "data/images/prof1.png",master=self.root)
@@ -72,7 +85,7 @@ class Connection:
         Label(self.root,text = "Chat Room",font = ("Arial",17),bg = "gray78").place(x=350,y=16)
         cht_font = font.Font(family = "Trebuchet MS",size =17)
         
-        self.cht_place = scrolledtext.ScrolledText(self.root,width=97,height = 16)
+        self.cht_place = scrolledtext.ScrolledText(self.root,width=97,height = 16) #Chat history here
         self.cht_place.place(x=2,y=67)
         self.cht_place.configure(font = cht_font)
         self.cht_place.config(state = "disabled")
@@ -106,6 +119,10 @@ class Connection:
                         self.cht_place.insert('end',message1)
                         self.cht_place.yview('end')
                         self.cht_place.config(state = 'disabled')
+                        '''
+                        If the chat window isn't in focus then a notification pops up with a sound
+                        indicating that there's a new message
+                        '''
                         if str(self.root.focus_get()) == "None":
                             notification.notify(
                                 title = "New message!",
@@ -156,4 +173,4 @@ class Connection:
         #Checking if shift is being pressed by the user
         if str(event).startswith("<KeyRelease event state=Shift"):self.shift_press = False
         
-con = Connection()
+con = Connection() #Object
