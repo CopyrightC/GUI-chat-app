@@ -50,7 +50,7 @@ class Connection:
                 messagebox.showerror("Error","Username can't have less than 4 characters")
                 self.usrnm = simpledialog.askstring("Username","Enter your username : ",parent = win)
                 
-            msg.destroy()
+            win.destroy()
             self.over = False
             self.shift_press = False
             self.setup= False
