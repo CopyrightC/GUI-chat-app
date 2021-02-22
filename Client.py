@@ -137,10 +137,10 @@ class Connection:
                 break
 
     def handle_quit(self):
-        self.root.destroy()
-        self.over = True
-        self.s.close()
-        exit(0) #Exit code 0
+        if messagebox.askyesnocancel("Quit","Do you want to quit?"):
+            self.over = True
+            self.s.close()
+            exit(0) #Exit code 0
 
     def sendmsg(self,*argv): 
         '''
