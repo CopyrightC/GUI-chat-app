@@ -155,9 +155,6 @@ class Connection:
             if len(msg) < 546: #Limiting the maximum character in a single message to 546 letters
                 contents = self.entry_area.get('1.0','end').replace('\n',"")
                 contents2 = str(contents).replace(' ',"")
-                print(len(contents2))
-                print(len(contents))
-                print(contents2)
                 if len(contents) > 0 and len(contents2) > 0: #Sending the message to server if the length of message(excluding the line break and spaces) is greater than 0
                     self.s.send(msg.encode())
                     self.s.send('\n'.encode())
