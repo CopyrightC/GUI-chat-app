@@ -170,7 +170,7 @@ class Connection:
     def checkkeyprs(self,event):self.shift_press = True
       
     def onrel(self,event):
-        #Checking if shift is being pressed by the user
+        #Checking if shift is released by the user
         if str(event).startswith("<KeyRelease event state=Shift"):self.shift_press = False
         
 con = Connection() #Object
