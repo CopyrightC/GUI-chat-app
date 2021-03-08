@@ -9,3 +9,4 @@ Features :
 4) Notifications upon receiving of messages if the window isn't in focus
 5) Easy to use!
 
+[Pychat 2.0 is under development]
