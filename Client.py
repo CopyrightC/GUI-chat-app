@@ -8,6 +8,7 @@ from win32api import GetSystemMetrics
 from plyer import notification
 from tkinter import font
 import socket
+import webbrowser
 
 def ask_ip_port():
     '''
@@ -27,7 +28,7 @@ class Connection:
         win.withdraw() #Withdrawing the window so the blank window isn't visible to the user
 
         self.connection_made = False
-        host,port = ask_ip_port()
+        host,port =ask_ip_port()
         self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         try:
             self.s.connect((host,port))
@@ -77,7 +78,7 @@ class Connection:
         self.root.resizable(0,0)
         self.btnimg = PhotoImage(file = "data/images/send1.png",master=self.root)
         self.prof = PhotoImage(file = "data/images/prof1.png",master=self.root)
-
+        self.mail = PhotoImage(file = "data/images/mail.png",master=self.root)
         tab = Canvas(self.root,width = 800,height = 60,bg = "cyan")
         tab.place(x=0,y=0)
         prflabel = Label(self.root,image = self.prof)
@@ -95,7 +96,8 @@ class Connection:
         
         sendbtn = Button(self.root,width = 65,height =60,bg="white",image = self.btnimg,command=self.sendmsg)
         sendbtn.place(x=726,y=526)
-
+        feedbackbtn = Button(self.root,width = 40,height = 40,image =self.mail,command = self.feedback)
+        feedbackbtn.place(x=740,y=10)
         self.setup = True
         self.root.protocol("WM_DELETE_WINDOW",self.handle_quit) #Handling the exit event
         
@@ -105,7 +107,8 @@ class Connection:
         self.root.bind("<KeyRelease>",self.onrel)
         self.root.bind("<Return>",self.sendmsg)
         self.root.mainloop()
-        
+    def feedback(self):
+        webbrowser.open("https://mail.google.com/mail/u/0/?fs=1&to=shouryasinha001@gmail.com&su=Feedback%20regarding%20PyChat&&tf=cm")
     def recv(self):
         while not self.over:
             try:
@@ -156,8 +159,11 @@ class Connection:
                 contents = self.entry_area.get('1.0','end').replace('\n',"")
                 contents2 = str(contents).replace(' ',"")
                 if len(contents) > 0 and len(contents2) > 0: #Sending the message to server if the length of message(excluding the line break and spaces) is greater than 0
-                    self.s.send(msg.encode())
-                    self.s.send('\n'.encode())
+                    try:
+                        self.s.send(msg.encode())
+                        self.s.send('\n'.encode())
+                    except:
+                        messagebox.showerror("Error!","You're not connected to the internet!")
                     self.entry_area.delete('1.0','end')
                 else:
                     self.entry_area.delete('end','end')
