@@ -1,4 +1,4 @@
-# GUI-chat-app
+# GUI-chat-app (Pychat)
 ![pychatimg](https://user-images.githubusercontent.com/68592417/110236772-b88f0980-7f5d-11eb-82ff-3fbf139b1aaf.png)
 
 
