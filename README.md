@@ -13,6 +13,7 @@
 Enter the following commands in your terminal (Windows; commands may differ for Mac, linux systems)
 ```
 git clone https://github.com/SATAN01/GUI-chat-app
+cd GUI-chat-app-main
 pip3 install -r requirements.txt
 python3 Server.py
 python3 Client.py
