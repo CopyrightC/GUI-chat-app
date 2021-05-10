@@ -14,7 +14,7 @@ Enter the following commands in your terminal (Windows; commands may differ for 
 ```
 git clone https://github.com/SATAN01/GUI-chat-app
 pip3 install -r requirements.txt
-python3 server.py
-python3 main.py
+python3 Server.py
+python3 Client.py
 ```
 [Pychat 2.0 is under development]
