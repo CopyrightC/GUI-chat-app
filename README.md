@@ -18,4 +18,3 @@ pip3 install -r requirements.txt
 python3 Server.py
 python3 Client.py
 ```
-[Pychat 2.0 is under development]
