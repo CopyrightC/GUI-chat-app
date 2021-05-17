@@ -1,5 +1,5 @@
 # GUI-chat-app (Pychat)
-**![pychatimg](https://user-images.githubusercontent.com/68592417/110236772-b88f0980-7f5d-11eb-82ff-3fbf139b1aaf.png)**
+![image](https://user-images.githubusercontent.com/68592417/118433360-6eae6680-b6f8-11eb-9dde-738079caae42.png)
 
 
 # Features :
